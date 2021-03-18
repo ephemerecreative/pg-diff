@@ -43,6 +43,6 @@
 		"chalk": "4.1.0",
 		"clui": "0.3.6",
 		"figlet": "1.5.0",
-		"pg-diff-api": "https://gitlab.com/ephemerecreative/ec-pg-diff/pg-diff-api.git"
+		"pg-diff-api": "https://github.com/ephemerecreative/pg-diff-api.git"
 	}
 }
