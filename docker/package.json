@@ -1,0 +1,13 @@
+{
+  "name": "pg-diff-docker",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "pg-diff-file": "node node_modules/pg-diff-cli/main",
+    "pg-diff-migrate": "node node_modules/pg-diff-cli/main -mt development"
+  },
+  "dependencies": {
+    "pg-diff-cli": "https://github.com/ephemerecreative/pg-diff.git"
+  }
+}
