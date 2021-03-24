@@ -7,7 +7,7 @@ const pg = require("pg");
             database: "postgres",
             user: "postgres",
             password: "password",
-            applicationName: "pg-diff-cli"
+            applicationName: "pg-diff"
         });
 
         await client.connect(err => {
