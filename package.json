@@ -19,7 +19,8 @@
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"pg-diff-file": "node main.js"
+		"pg-diff-file": "node main.js",
+		"migrations": "node entrypoint.js"
 	},
 	"bin": {
 		"pg-diff": "main.js"
@@ -43,6 +44,7 @@
 		"chalk": "4.1.0",
 		"clui": "0.3.6",
 		"figlet": "1.5.0",
-		"pg-diff-api": "https://github.com/ephemerecreative/pg-diff-api.git"
+		"pg-diff-api": "https://github.com/ephemerecreative/pg-diff-api.git",
+		"pg": "^8.5.1"
 	}
 }

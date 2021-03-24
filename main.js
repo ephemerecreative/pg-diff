@@ -33,7 +33,7 @@ function HandleError(e) {
 
 	switch (e.code) {
 		case "MODULE_NOT_FOUND":
-			log(chalk.red('Please create the configuration file "pg-diff-config.json" in the same folder where you run pg-diff!'));
+			log(chalk.red('Please create the configuration file "pg-diff-config1.json" in the same folder where you run pg-diff!'));
 			break;
 	}
 }
