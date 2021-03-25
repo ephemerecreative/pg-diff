@@ -37,5 +37,44 @@
       "historyTableName": "migration",
       "historyTableSchema": "public"
     }
+  },
+  "local": {
+    "sourceClient": {
+      "host": "host.docker.internal",
+      "port": 5430,
+      "database": "postgres",
+      "user": "postgres",
+      "password": "password",
+      "applicationName": "pg-diff-cli"
+    },
+    "targetClient": {
+      "host": "host.docker.internal",
+      "port": 5430,
+      "database": "temp",
+      "user": "postgres",
+      "password": "password",
+      "applicationName": "pg-diff-cli"
+    },
+    "compareOptions": {
+      "author": "Swarn",
+      "outputDirectory": "migrations",
+      "getAuthorFromGit": false,
+      "schemaCompare": {
+        "namespaces": ["public"],
+        "dropMissingTable": false,
+        "dropMissingView": false,
+        "dropMissingFunction": false,
+        "dropMissingAggregate": false,
+        "roles": []
+      },
+      "dataCompare": {
+        "enable": false
+      }
+    },
+    "migrationOptions": {
+      "patchesDirectory": "migrations",
+      "historyTableName": "migration",
+      "historyTableSchema": "public"
+    }
   }
 }
