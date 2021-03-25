@@ -1,7 +1,7 @@
 {
   "development": {
     "sourceClient": {
-      "host": "host.docker.internal",
+      "host": "localhost",
       "port": 5430,
       "database": "postgres",
       "user": "postgres",
@@ -9,7 +9,7 @@
       "applicationName": "pg-diff-cli"
     },
     "targetClient": {
-      "host": "host.docker.internal",
+      "host": "localhost",
       "port": 5430,
       "database": "temp2",
       "user": "postgres",
@@ -40,7 +40,7 @@
   },
   "local": {
     "sourceClient": {
-      "host": "host.docker.internal",
+      "host": "localhost",
       "port": 5430,
       "database": "postgres",
       "user": "postgres",
@@ -48,7 +48,7 @@
       "applicationName": "pg-diff-cli"
     },
     "targetClient": {
-      "host": "host.docker.internal",
+      "host": "localhost",
       "port": 5430,
       "database": "temp",
       "user": "postgres",

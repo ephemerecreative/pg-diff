@@ -1,7 +1,7 @@
-const { exec } = require('child_process');
-const makeClient = require("./pgClients");
+const { execSync } = require('child_process');
+const makeClient = require("./client");
 const dbname = require('./pg-diff-config.json').development.targetClient.database;
-
+const pg_config_dev = require("./pg-diff-config.json").development.sourceClient;
 RunCommands()
     .then(() => {
         console.log("Process Completed")
@@ -12,73 +12,59 @@ RunCommands()
 })
 
 async function RunCommands() {
+    const client = await makeClient(pg_config_dev);
     const arguments = process.argv.slice(2);
-    const client = await makeClient();
     if (arguments.length <= 0) {
         console.log("No argument provided!");
         process.exit();
     }
     if(arguments[0] === 'create-migrations') {
         console.log(dbname);
-       createDatabase(client).then(() => {
-            console.log("function called");
-       }).catch((e) => console.log("error from postgres", e));
+       await createDatabase(client).then(() => {
+            console.log("Creating Database");
+       }).catch((e) => console.log("Error from postgres", e));
 
-        exec('yarn pg-diff-file -mt development', (err, stdout, stderr) => {
-            console.log("in exec of applying")
-            if (err) {
-                console.log("errored", err)
-                console.log(`any error: ${stderr}`);
-                dropDatabase(client);
-                process.exit();
-                return;
-            }
-            console.log(`output on successful: ${stdout}`);
-            console.log(`any error: ${stderr}`);
-        });
+       try {
+           await execSync('yarn pg-diff-file -mt development', {stdio: 'inherit'});
+       }
+       catch (err) {
+           console.log("Error in new command", err.message);
+           await dropDatabase(client);
+           process.exit();
+       }
 
-       exec('yarn pg-diff-file -c development initial_diff', (err, stdout, stderr) => {
-           console.log("in exec of create")
-            if (err) {
-                console.log("errorred", err);
-                dropDatabase(client);
-                process.exit();
-                return;
-            }
-           dropDatabase(client).then(() => {
-               console.log("dropped called")
-               process.exitCode = 0;
-               process.exit();
-           });
-            console.log(`output on successful: ${stdout}`);
-            console.log(`any error creation: ${stderr}`);
+        try {
+            await execSync('yarn pg-diff-file -c development migrations', {stdio: 'inherit'});
+        }
+        catch (err) {
+            console.log("Error in migration create command", err.message);
+            await dropDatabase(client);
+            process.exit();
+        }
+
+        dropDatabase(client).then(() => {
+            console.log("Dropping database")
+            client.end();
+            process.exitCode = 0;
             process.exit();
         });
     }
     if( arguments[0] === 'run-migrations') {
-        exec('yarn pg-diff-file -mt local', (err, stdout, stderr) => {
-            console.log("in exec of local migrations")
-            if (err) {
-                console.log("errorred", err);
-                process.exit();
-                return;
-            }
-            console.log(`output on successful: ${stdout}`);
-            console.log(`any error creation: ${stderr}`);
+        try {
+            await execSync('yarn pg-diff-file -mt local', {stdio: 'inherit'});
             process.exit();
-        });
+        }
+        catch (err) {
+            console.log("Error in new command", err.message);
+        }
     }
 }
 
 async function createDatabase(client) {
-    await client.query(`CREATE DATABASE ${dbname}`).then(() => {
-        console.log("created database")
-    }).catch((e) => {
-        console.log("errorMessage",e)
-    });
+    await client.query(`CREATE DATABASE ${dbname}`);
 }
 
 async function dropDatabase(client) {
-    await client.query(`DROP DATABASE ${dbname}`).then(() => console.log("dropped"))
+    await client.query(`DROP DATABASE ${dbname}`);
 }
 
